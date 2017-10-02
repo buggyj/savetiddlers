@@ -1,0 +1,26 @@
+{
+    "name": "downloads.download blob",
+    "version": "1",
+    "manifest_version": 2,
+    "applications": {
+        "gecko": {
+            "id": "random201709301147@buggyjef.uk"
+        }
+    },
+    "content_scripts" : [ {
+		"js" : [
+			"ContentScript.js"
+		],
+      "matches" : [
+        "file:///*"
+      ],
+		"run_at" : "document_start"
+	} ],
+    "background": {
+        "scripts": ["background.js"]
+    },
+    "permissions": [
+        "downloads",
+        "<all_urls>"
+    ]
+}
