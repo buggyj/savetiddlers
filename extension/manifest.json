@@ -20,6 +20,7 @@
         "scripts": ["background.js"]
     },
     "permissions": [
+		"storage" ,
         "downloads",
         "<all_urls>"
     ]
