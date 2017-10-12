@@ -1,11 +1,11 @@
 # tiddlysaver - proof of concept only -
 
-Aim
+## Aim
 1. To enable tiddlywikis to be saved like a file, i.e. the new (modified) version overwrites the old version.
 2. To provide automatic backups.
 
 ## Scope and limitations
-1. This is a browser extension designed to work with chrome and other chromium, and the new firefox browser (v57 and latter).
+1. This is a browser extension designed to work with chrome and other chromium based browsers, and the new firefox browser (v57 and latter).
 2. Due to browser restrictions tiddlywikis must be located below a subdir of the 'Download' directory.
 
 ## Getting started
