@@ -1,5 +1,5 @@
 {
-    "name": "downloads.download blob",
+    "name": "TW Saver",
     "version": "1",
     "manifest_version": 2,
     "applications": {
@@ -19,6 +19,11 @@
     "background": {
         "scripts": ["background.js"]
     },
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  },
+     "short_name": "TWRouter",
     "permissions": [
 		"storage" ,
         "downloads",

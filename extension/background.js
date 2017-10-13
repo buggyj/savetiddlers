@@ -1,9 +1,9 @@
 
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    console.log("at the back message received-msg");
-    
-		if (!message.twdl) {
+    console.log("at the back got message.twdl");
+    //show the choose file dialogue when tw not under 'tiddlywikilocations'
+	if (!message.twdl) {
 		chrome.downloads.download({
 			url: URL.createObjectURL(new Blob([message.txt], {type: 'text/plain'})),
 			filename: message.path,
@@ -17,12 +17,12 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 		});
 	}
 	//once a day backup 
-	chrome.storage.local.get(message.path, function(items) {
+	chrome.storage.local.get({backupdir:"backupfiles",[message.path]:null}, function(items) {
 		if ((new Date()).toISOString().slice(0,10) !== items[message.path]) {
 			var bkdate = (new Date()).toISOString().slice(0,10);
 			chrome.downloads.download({
 					url: URL.createObjectURL(new Blob([message.txt], {type: 'text/plain'})),
-					filename: 'tiddlywikilocations/backupfiles/'+message.path.replace(new RegExp('.{' + message.path.lastIndexOf(".")  + '}'), '$&' + bkdate),
+					filename: 'tiddlywikilocations/'+items.backupdir+'/'+message.path.replace(new RegExp('.{' + message.path.lastIndexOf(".")  + '}'), '$&' + bkdate),
 					conflictAction: 'overwrite'
 				});
 			chrome.storage.local.set({
