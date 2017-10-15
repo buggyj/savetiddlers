@@ -14,3 +14,7 @@
 3. Download a tiddlywiki from http://tiddlywiki.com/, and place in that subdir.
 
 The name of the subdir (relative position to the current TW) can be set from the option page.
+
+## Gotchas
+In chome there is the event 'onDeterminingFilename' which extensions can watch for and override the target DownloadItem.filename (some extensions move downloads into different folders by file type) which would break things. 
+This has not been implemented in firefox.
