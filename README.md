@@ -18,3 +18,5 @@ The name of the subdir (relative position to the current TW) can be set from the
 ## Gotchas
 In chome there is the event 'onDeterminingFilename' which extensions can watch for and override the target DownloadItem.filename (some extensions move downloads into different folders by file type) which would break things. 
 onDeterminingFilename has not been implemented in firefox.
+
+The Download directory must not be beneith a directory called tiddlywikilocations.
