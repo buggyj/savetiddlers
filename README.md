@@ -23,4 +23,4 @@ Same as chrome, except navigate to about:debugging and click 'Load Temporary Add
 In chome there is the event 'onDeterminingFilename' which extensions can watch for and override the target DownloadItem.filename (some extensions move downloads into different folders by file type) which would break things. 
 onDeterminingFilename has not been implemented in firefox.
 
-The Download directory must not be beneith a directory called tiddlywikilocations.
+The Download directory must not be beneath a directory called tiddlywikilocations.
