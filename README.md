@@ -13,7 +13,11 @@
 2. Create a subdir called tiddlywikilocations in the Dowload dir. 
 3. Download a tiddlywiki from http://tiddlywiki.com/, and place in that subdir.
 
-The name of the subdir (relative position to the current TW) can be set from the option page.
+The name of the subdir for backups (relative position to the current TW) can be set from the option page.
+
+## Getting started (firefox 57beta)
+Same as chrome, except navigate to about:debugging and click 'Load Temporary Add-on'. Until a version of the add-on is signed this step will need to be repeat each time firefox starts.
+
 
 ## Gotchas
 In chome there is the event 'onDeterminingFilename' which extensions can watch for and override the target DownloadItem.filename (some extensions move downloads into different folders by file type) which would break things. 
