@@ -8,13 +8,27 @@ document.addEventListener('DOMContentLoaded', injectMessageBox, false);
 
 var tiddlywikilocations = "tiddlywikilocations";
 
-function fireContentLoadedEvent () {
-    console.log ("DOMContentLoaded");
-    // PUT YOUR CODE HERE.
-    //document.body.textContent = "Changed this!";
+
+function isTiddlyWikiClassic(doc) {
+		// Test whether the document is a TiddlyWiki (we don't have access to JS objects in it)
+		var versionArea = doc.getElementById("versionArea");
+		return (doc.location.protocol === "file:") &&
+			doc.getElementById("storeArea") &&
+			(versionArea && /TiddlyWiki/.test(versionArea.text));
 }
+
 function injectMessageBox(doc) {
+	var s;
 	doc = document;
+	if (isTiddlyWikiClassic(doc)) {
+		s = document.createElement('script');
+		s.src = chrome.extension.getURL('script.js');
+		(document.head||document.documentElement).appendChild(s);
+		s.onload = function() {
+			s.parentNode.removeChild(s);
+		};
+		
+	}
 		// Inject the message box
 		var messageBox = doc.getElementById("tiddlyfox-message-box");
 		if(!messageBox) {

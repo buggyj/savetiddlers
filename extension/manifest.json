@@ -28,5 +28,6 @@
 		"storage" ,
         "downloads",
         "<all_urls>"
-    ]
+    ],
+      "web_accessible_resources": ["script.js"]
 }
