@@ -3,7 +3,8 @@ function save_options() {
   var backupdir = document.getElementById('backupdir').value;
   chrome.storage.local.set({
     backupdir:  backupdir,
-    periodchoice:document.getElementById("period").value
+    backup: document.getElementById("backup").checked,
+    periodchoice: document.getElementById("period").value
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -19,10 +20,12 @@ function restore_options() {
   
   chrome.storage.local.get({
 	backupdir:  "backupdir",
-	periodchoice: "day"
+	periodchoice: "day",
+	backup: false
   }, function(items) {
     document.getElementById('backupdir').value = items.backupdir;
     document.getElementById("period").value = items.periodchoice;
+    document.getElementById("backup").checked = items.backup;
   });
 }
 document.addEventListener('DOMContentLoaded', restore_options);

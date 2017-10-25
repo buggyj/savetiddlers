@@ -39,8 +39,9 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 		console.log("saved "+message.path);
 	}
 	// backup 
-	chrome.storage.local.get({minute:true,periodchoice:"day",period:[],backupdir:"backupdir", backedup:{}}, function(items) {
+	chrome.storage.local.get({backup:false,minute:true,periodchoice:"day",period:[],backupdir:"backupdir", backedup:{}}, function(items) {
 		var newvals={}, newdate = new Date(), date = datesArray(newdate,items.periodchoice == "hour",items.minute), bkdate = newdate.toISOString().slice(0,10);
+		if (items.backup === false) return;
 		if (equalDateArrays(date, items.period)) {
 			if (items.backedup[message.path]) { 
 				return;// already save in this period
