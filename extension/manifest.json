@@ -7,6 +7,10 @@
             "id": "random201709301147@buggyjef.uk"
         }
     },
+    "icons": {
+
+		"48": "saver48.png"
+	},
     "content_scripts" : [ {
 		"js" : [
 			"ContentScript.js"
