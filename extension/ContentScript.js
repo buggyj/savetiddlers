@@ -62,6 +62,7 @@ function injectMessageBox(doc) {
 		// Save the file
 		try {
 			var msg = {}, path, firstloc = filePath.indexOf("/"+tiddlywikilocations+"/");
+			msg.filePath = filePath.substring(0, firstloc);
 			if (firstloc === -1) {
 				alert("file not in a sudir to "+tiddlywikilocations+", it will be saved to the download dir");
 				path = filePath.split("/");

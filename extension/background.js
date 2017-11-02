@@ -1,3 +1,5 @@
+var testmode = false; //set to true to avoid path test
+
 function datesArray(now,andHours,andMinutes)
 {
 	var date = [now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate()];
@@ -20,50 +22,88 @@ function equalDateArrays(Ar1,Ar2) {
 	return true;
 }
 	
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    console.log("at the back got message.twdl");
+function dodownload (msg){					
+	chrome.downloads.download({
+		url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
+		filename: 'tiddlywikilocations/'+msg.path,
+		conflictAction: 'overwrite'
+	},
+	function(id) {
+		console.log("savetiddlers: saved "+msg.path);
+		chrome.storage.local.get({backup:false,minute:true,periodchoice:"day",period:[],backupdir:"backupdir",backedup:{}}, function(items) {
+			var newvals={}, newdate = new Date(), 
+				date = datesArray(newdate,items.periodchoice == "hour",items.minute), 
+				bkdate = newdate.toISOString().slice(0,10);
+			if (items.backup === false) return;
+			if (equalDateArrays(date, items.period)) {
+				if (items.backedup[msg.path]) { 
+					return;// already save in this period
+				}
+				// continue with this peroid
+				newvals.backedup = items.backedup;
+				newvals.period = items.period;
+			} else {
+				// new time period
+				newvals.backedup = {};
+				newvals.period = date;
+			} 
+			// remember we backedup on this filepath
+			newvals.backedup[msg.path] = true;
+			chrome.downloads.download({
+					url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
+					filename: 'tiddlywikilocations/'+items.backupdir+'/'+msg.path.replace(new RegExp('.{' + msg.path.lastIndexOf(".")  + '}'), '$&' + bkdate),
+					conflictAction: 'overwrite'
+				});
+			console.log("savetiddlers: backedup "+msg.path);
+			chrome.storage.local.set(newvals);
+		});
+	});
+}
+
+var testpath = 'tiddlywikilocations/'+'testdl059723833.html';
+
+chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
+    console.log("savetiddlers: background got message.twdl");
     // show the choose file dialogue when tw not under 'tiddlywikilocations'
-	if (!message.twdl) {
+	if (!msg.twdl) {
+		console.log("savetiddlers: not in tiddlywikilocations "+msg.path);
 		chrome.downloads.download({
-			url: URL.createObjectURL(new Blob([message.txt], {type: 'text/plain'})),
-			filename: message.path,
+			url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
+			filename: msg.path,
 			saveAs : true
 		});
-		return; // don't try to backup 
-	} else { 
+	} else if (testmode) {
+		dodownload(msg);//avoid path testing
+	} else{ 
+		// first download check our destination is valid by download a dummy file first and then reading back the filepath	
 		chrome.downloads.download({
-			url: URL.createObjectURL(new Blob([message.txt], {type: 'text/plain'})),
-			filename: 'tiddlywikilocations/'+message.path,
+			url: URL.createObjectURL(new Blob(["test for savetiddlers"], {type: 'text/plain'})),
+			filename: testpath,
 			conflictAction: 'overwrite'
-		});
-		console.log("saved "+message.path);
+			},function(id){chrome.downloads.onChanged.addListener(function hearchange(deltas){
+				// wait for completion
+				if (deltas.id == id && deltas.state && deltas.state.current === "complete") {
+					chrome.downloads.onChanged.removeListener(hearchange);
+					chrome.downloads.search({id:id}, function(x){
+						//check that our path is the same as request
+						if (msg.filePath == x[0].filename.split('/'+testpath)[0]) {
+							// All tests passed!
+							dodownload(msg);
+						} else {				
+							console.log("savetiddlers: failed path "+msg.filePath +"!="+x[0].filename.split('/'+testpath)[0]);
+							chrome.downloads.download({
+								url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
+								filename: msg.path,
+								saveAs : true
+							});
+						}
+						
+						chrome.downloads.removeFile(id);
+					});
+					return;					
+				}
+				//
+			})}
+		)
 	}
-	// backup 
-	chrome.storage.local.get({backup:false,minute:true,periodchoice:"day",period:[],backupdir:"backupdir", backedup:{}}, function(items) {
-		var newvals={}, newdate = new Date(), date = datesArray(newdate,items.periodchoice == "hour",items.minute), bkdate = newdate.toISOString().slice(0,10);
-		if (items.backup === false) return;
-		if (equalDateArrays(date, items.period)) {
-			if (items.backedup[message.path]) { 
-				return;// already save in this period
-			}
-			// continue with this peroid
-			newvals.backedup = items.backedup;
-			newvals.period = items.period;
-		} else {
-			// new time period
-			newvals.backedup = {};
-			newvals.period = date;
-		} 
-		// remember we backedup on this filepath
-		newvals.backedup[message.path] = true;
-		chrome.downloads.download({
-				url: URL.createObjectURL(new Blob([message.txt], {type: 'text/plain'})),
-				filename: 'tiddlywikilocations/'+items.backupdir+'/'+message.path.replace(new RegExp('.{' + message.path.lastIndexOf(".")  + '}'), '$&' + bkdate),
-				conflictAction: 'overwrite'
-			});
-		console.log("backedup "+message.path);
-		chrome.storage.local.set(newvals)
-
-	});
-   
 });
