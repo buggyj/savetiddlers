@@ -22,7 +22,12 @@ function equalDateArrays(Ar1,Ar2) {
 	return true;
 }
 	
-function dodownload (msg){					
+
+var testpath = 'tiddlywikilocations/'+'dummydl059723833.html';
+
+chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
+    console.log("savetiddlers: background got message.twdl");
+    function dodownload (msg){					
 	chrome.downloads.download({
 		url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
 		filename: 'tiddlywikilocations/'+msg.path,
@@ -34,9 +39,13 @@ function dodownload (msg){
 			var newvals={}, newdate = new Date(), 
 				date = datesArray(newdate,items.periodchoice == "hour",items.minute), 
 				bkdate = newdate.toISOString().slice(0,10);
-			if (items.backup === false) return;
+			if (items.backup === false) {
+				sendResponse ("saved");
+				return;
+			}
 			if (equalDateArrays(date, items.period)) {
 				if (items.backedup[msg.path]) { 
+					sendResponse ("saved");
 					return;// already save in this period
 				}
 				// continue with this peroid
@@ -53,17 +62,13 @@ function dodownload (msg){
 					url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
 					filename: 'tiddlywikilocations/'+items.backupdir+'/'+msg.path.replace(new RegExp('.{' + msg.path.lastIndexOf(".")  + '}'), '$&' + bkdate),
 					conflictAction: 'overwrite'
-				});
+				},function(id){sendResponse("backupsaved");});
 			console.log("savetiddlers: backedup "+msg.path);
 			chrome.storage.local.set(newvals);
 		});
 	});
 }
 
-var testpath = 'tiddlywikilocations/'+'testdl059723833.html';
-
-chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
-    console.log("savetiddlers: background got message.twdl");
     // show the choose file dialogue when tw not under 'tiddlywikilocations'
 	if (!msg.twdl) {
 		console.log("savetiddlers: not in tiddlywikilocations "+msg.path);
@@ -71,7 +76,8 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 			url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
 			filename: msg.path,
 			saveAs : true
-		});
+		},function(id){sendResponse("failedloc");});
+		
 	} else if (testmode) {
 		dodownload(msg);//avoid path testing
 	} else{ 
@@ -95,15 +101,16 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 								url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
 								filename: msg.path,
 								saveAs : true
-							});
+							},function(id){sendResponse("failedpath");});
 						}
 						
 						chrome.downloads.removeFile(id);
 					});
-					return;					
+							
 				}
 				//
 			})}
 		)
 	}
+	return true;
 });

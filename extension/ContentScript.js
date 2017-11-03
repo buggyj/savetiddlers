@@ -43,21 +43,27 @@ function injectMessageBox(doc) {
 		var message = event.target,
 			path = message.getAttribute("data-tiddlyfox-path"),
 			content = message.getAttribute("data-tiddlyfox-content");
-		// Save the file
-		saveFile(path,content);
 		// Remove the message element from the message box
 		message.parentNode.removeChild(message);
-		// Send a confirmation message
-		
-		var event1 =doc.createEvent("Events");
-		event1.initEvent("tiddlyfox-have-saved-file",true,false);
-		event1.savedFilePath = path;
-		message.dispatchEvent(event1);
+		// Save the file
+		saveFile(path,content,function(response) {
+			// Send a confirmation message
+			var event1;
+			console.log ("savetiddlers: response is "+response);
+			if (response === "failedloc" ) console.log("savetiddlers: TW in wrong location");
+			if (response === "failedpath") console.log("savetiddlers: TW in wrong location or another extension is changing download");
+			event1 =doc.createEvent("Events");
+			event1.initEvent("tiddlyfox-have-saved-file",true,false);
+			event1.savedFilePath = path;
+			message.dispatchEvent(event1);
+		});
+
+
 		return false;
 	},false);
 	}
 
-	 function saveFile(filePath,content) {
+	 function saveFile(filePath,content,callback) {
 
 		// Save the file
 		try {
@@ -74,7 +80,7 @@ function injectMessageBox(doc) {
 			}
 			msg.txt = content;
 			console.log("from cs: we are inside downloads at "+msg.path);
-            chrome.runtime.sendMessage(msg);
+            chrome.runtime.sendMessage(msg,callback);
 			return true;
 		} catch(ex) {
 			alert(ex);
