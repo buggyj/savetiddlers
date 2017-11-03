@@ -6,10 +6,18 @@
         "gecko": {
             "id": "random201709301147@buggyjef.uk"
         }
-    },
+    }, 
+     "browser_action": {
+      "default_icon": {
+         "48": "saver48.png"
+      },
+      "default_popup": "options.html"
+   },
     "icons": {
 
-		"48": "saver48.png"
+		"16": "saver16.png",
+		"48": "saver48.png",
+		"128": "saver128.png"
 	},
     "content_scripts" : [ {
 		"js" : [
