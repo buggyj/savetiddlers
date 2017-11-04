@@ -1,4 +1,5 @@
 var testmode = false; //set to true to avoid path test
+var minutebacks = false; //set to true to allow backs every minute for testing
 
 var tiddlywikilocations = "tiddlywikilocations";
 
@@ -40,9 +41,9 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 	},
 	function(id) {
 		console.log("savetiddlers: saved "+msg.path);
-		chrome.storage.local.get({backup:false,minute:true,periodchoice:"day",period:[],backupdir:"backupdir",backedup:{}}, function(items) {
+		chrome.storage.local.get({backup:false,periodchoice:"day",period:[],backupdir:"backupdir",backedup:{}}, function(items) {
 			var newvals={}, newdate = new Date(), 
-				date = datesArray(newdate,items.periodchoice == "hour",items.minute), 
+				date = datesArray(newdate,items.periodchoice == "hour",minutebacks), 
 				bkdate = newdate.toISOString().slice(0,10);
 			if (items.backup === false) {
 				sendResponse ("saved");
