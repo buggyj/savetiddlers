@@ -16,7 +16,8 @@
 The name of the subdir for backups (relative position to the current TW) can be set from the option page.
 
 ## Getting started (firefox 57beta)
-Same as chrome, except navigate to about:debugging and click 'Load Temporary Add-on'. Until a version of the add-on is signed this step will need to be repeat each time firefox starts.
+Click this link to start installing.
+https://github.com/buggyj/savetiddlers/releases/download/0.1/save_tiddlers-0.1-an.fx.xpi
 
 
 ## Gotchas
