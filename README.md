@@ -1,4 +1,4 @@
-# bsaver - proof of concept only -
+# savetiddlers
 
 ## Aim
 1. To enable tiddlywikis to be saved like a file, i.e. the new (modified) version overwrites the old version.
