@@ -1,6 +1,6 @@
 {
     "name": "Save Tiddlers",
-    "version": "1",
+    "version": "0.1",
     "manifest_version": 2,
     "applications": {
         "gecko": {
