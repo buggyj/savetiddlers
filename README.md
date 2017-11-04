@@ -28,4 +28,4 @@ onDeterminingFilename has not been implemented in firefox.
 
 The Download directory must not be beneath a directory called tiddlywikilocations.
 
-These are tested for within the extension and control is passed to the file chooser.
+These are tested for within the extension and if found, control is passed to the file chooser.
