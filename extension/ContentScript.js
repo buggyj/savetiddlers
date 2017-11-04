@@ -6,9 +6,6 @@ document.addEventListener('DOMContentLoaded', injectMessageBox, false);
  * the backgound would set a value we read here and if set save a test file.
  */
 
-var tiddlywikilocations = "tiddlywikilocations";
-
-
 function isTiddlyWikiClassic(doc) {
 		// Test whether the document is a TiddlyWiki (we don't have access to JS objects in it)
 		var versionArea = doc.getElementById("versionArea");
@@ -67,19 +64,10 @@ function injectMessageBox(doc) {
 
 		// Save the file
 		try {
-			var msg = {}, path, firstloc = filePath.indexOf("/"+tiddlywikilocations+"/");
-			msg.filePath = filePath.substring(0, firstloc);
-			if (firstloc === -1) {
-				alert("file not in a sudir to "+tiddlywikilocations+", it will be saved to the download dir");
-				path = filePath.split("/");
-			    msg.path = path[path.length-1];
-			}
-			else {
-				msg.path = filePath.slice(firstloc+tiddlywikilocations.length + "//".length);
-				msg.twdl = true;
-			}
+			var msg = {};
+			msg.filePath = filePath;
 			msg.txt = content;
-			console.log("from cs: we are inside downloads at "+msg.path);
+			console.log("from cs: we are inside downloads at "+msg.filePath);
             chrome.runtime.sendMessage(msg,callback);
 			return true;
 		} catch(ex) {

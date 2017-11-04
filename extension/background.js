@@ -1,5 +1,9 @@
 var testmode = false; //set to true to avoid path test
 
+var tiddlywikilocations = "tiddlywikilocations";
+
+var  $ = {"/":"/"};
+
 function datesArray(now,andHours,andMinutes)
 {
 	var date = [now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate()];
@@ -22,15 +26,16 @@ function equalDateArrays(Ar1,Ar2) {
 	return true;
 }
 	
-
-var testpath = 'tiddlywikilocations/'+'dummydl059723833.html';
+chrome.runtime.getPlatformInfo( function(info) {if(info.os == "win") { $["/"] = "\\"; }
+	
+var testpath = 'tiddlywikilocations'+$["/"]+'dummydl059723833.html';
 
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
     console.log("savetiddlers: background got message.twdl");
     function dodownload (msg){					
 	chrome.downloads.download({
 		url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
-		filename: 'tiddlywikilocations/'+msg.path,
+		filename: 'tiddlywikilocations'+$["/"]+ msg.path,
 		conflictAction: 'overwrite'
 	},
 	function(id) {
@@ -60,7 +65,7 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 			newvals.backedup[msg.path] = true;
 			chrome.downloads.download({
 					url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
-					filename: 'tiddlywikilocations/'+items.backupdir+'/'+msg.path.replace(new RegExp('.{' + msg.path.lastIndexOf(".")  + '}'), '$&' + bkdate),
+					filename: 'tiddlywikilocations'+$["/"]+items.backupdir+$["/"]+msg.path.replace(new RegExp('.{' + msg.path.lastIndexOf(".")  + '}'), '$&' + bkdate),
 					conflictAction: 'overwrite'
 				},function(id){sendResponse("backupsaved");});
 			console.log("savetiddlers: backedup "+msg.path);
@@ -68,6 +73,18 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 		});
 	});
 }
+	var path, firstloc = msg.filePath.indexOf($["/"]+tiddlywikilocations+$["/"]);
+	
+	msg.fPath = msg.filePath.substring(0, firstloc);
+	if (firstloc === -1) {
+		alert("file not in a sudir to "+tiddlywikilocations+", it will be saved to the download dir");
+		path = msg.filePath.split($["/"]);
+		msg.path = path[path.length-1];
+	}
+	else {
+		msg.path = msg.filePath.slice(firstloc+tiddlywikilocations.length + "//".length);
+		msg.twdl = true;
+	}
 
     // show the choose file dialogue when tw not under 'tiddlywikilocations'
 	if (!msg.twdl) {
@@ -92,11 +109,11 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 					chrome.downloads.onChanged.removeListener(hearchange);
 					chrome.downloads.search({id:id}, function(x){
 						//check that our path is the same as request
-						if (msg.filePath == x[0].filename.split('/'+testpath)[0]) {
+						if (msg.fPath == x[0].filename.split($["/"]+testpath)[0]) {
 							// All tests passed!
 							dodownload(msg);
 						} else {				
-							console.log("savetiddlers: failed path "+msg.filePath +"!="+x[0].filename.split('/'+testpath)[0]);
+							console.log("savetiddlers: failed path "+msg.fPath +"!="+x[0].filename.split($["/"]+testpath)[0]);
 							chrome.downloads.download({
 								url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
 								filename: msg.path,
@@ -113,4 +130,5 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 		)
 	}
 	return true;
+})
 });
