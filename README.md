@@ -10,8 +10,8 @@
 
 ## Getting started (chrome)
 1. Install by downloading (goto the release https://github.com/buggyj/savetiddlers/releases and download by click the 'source code' zip link) and unzipping (e.g. in a directory called savetiddlers). Then in chrome navigate to chrome://extensions/ and click 'load unpacked extension' and go the bsaver/extension/ directory to select the extension (it's the directory containing the 'manifest.json' file).
-2. Create a subdir called **tiddlywikilocations** in the Dowload dir. 
-3. Download a tiddlywiki from http://tiddlywiki.com/, and place in that subdir.
+2. **Create a subdir called tiddlywikilocations** in the Dowload dir. 
+3. Download a tiddlywiki from http://tiddlywiki.com/, and **place in that subdir**.
 
 The name of the subdir for backups (relative position to the current TW) can be set from the option page.
 
@@ -19,8 +19,9 @@ The name of the subdir for backups (relative position to the current TW) can be 
 0. Uninstall tiddlyfox thru the addons page (if it is installed).
 1. Click this link to start installing.
 https://github.com/buggyj/savetiddlers/releases/download/0.1/save_tiddlers-0.1-an.fx.xpi
-2. Create a subdir called tiddlywikilocations in the Dowload dir. 
-3. Download a tiddlywiki from http://tiddlywiki.com/, and place in that subdir.
+**Create a subdir called tiddlywikilocations** in the Dowload dir. 
+3. Download a tiddlywiki from http://tiddlywiki.com/, and **place in that subdir**.
+
 
 ## Gotchas
 In chome there is the event 'onDeterminingFilename' which extensions can watch for and override the target DownloadItem.filename (some extensions move downloads into different folders by file type) which would break things. 
