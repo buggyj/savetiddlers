@@ -1,5 +1,5 @@
 {
-    "name": "BSaver",
+    "name": "Save Tiddlers",
     "version": "1",
     "manifest_version": 2,
     "applications": {
@@ -35,7 +35,7 @@
     "page": "options.html",
     "chrome_style": true
   },
-     "short_name": "TWRouter",
+     "short_name": "SaveTids",
     "permissions": [
 		"storage" ,
         "downloads",

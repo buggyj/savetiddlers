@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   
   document.querySelector('#about').addEventListener('click', function() {
-    window.open("https://github.com/buggyj/bsaver");
+    window.open("https://github.com/buggyj/savetiddlers");
   });
 
 });
