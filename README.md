@@ -16,9 +16,10 @@
 The name of the subdir for backups (relative position to the current TW) can be set from the option page.
 
 ## Getting started (firefox 57beta)
-Click this link to start installing.
+1. Click this link to start installing.
 https://github.com/buggyj/savetiddlers/releases/download/0.1/save_tiddlers-0.1-an.fx.xpi
-
+2. Create a subdir called tiddlywikilocations in the Dowload dir. 
+3. Download a tiddlywiki from http://tiddlywiki.com/, and place in that subdir.
 
 ## Gotchas
 In chome there is the event 'onDeterminingFilename' which extensions can watch for and override the target DownloadItem.filename (some extensions move downloads into different folders by file type) which would break things. 
