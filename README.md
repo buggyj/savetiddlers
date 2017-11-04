@@ -9,8 +9,8 @@
 2. Due to browser restrictions tiddlywikis must be located below a subdir of the 'Download' directory.
 
 ## Getting started (chrome)
-1. Install by downloading (goto the release https://github.com/buggyj/savetiddlers/releases and download by click the 'source code' zip link) and unzipping (e.g. in a directory called bsaver). Then in chrome navigate to chrome://extensions/ and click 'load unpacked extension' and go the bsaver/extension/ directory to select the extension (it's the directory containing the 'manifest.json' file).
-2. Create a subdir called tiddlywikilocations in the Dowload dir. 
+1. Install by downloading (goto the release https://github.com/buggyj/savetiddlers/releases and download by click the 'source code' zip link) and unzipping (e.g. in a directory called savetiddlers). Then in chrome navigate to chrome://extensions/ and click 'load unpacked extension' and go the bsaver/extension/ directory to select the extension (it's the directory containing the 'manifest.json' file).
+2. Create a subdir called **tiddlywikilocations** in the Dowload dir. 
 3. Download a tiddlywiki from http://tiddlywiki.com/, and place in that subdir.
 
 The name of the subdir for backups (relative position to the current TW) can be set from the option page.
