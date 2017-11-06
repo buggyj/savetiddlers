@@ -9,14 +9,18 @@
 2. Due to browser restrictions tiddlywikis must be located below a subdir of the 'Download' directory.
 
 ## Getting started (chrome)
-1. Install by downloading (click the green 'clone or download' button above and then click 'download ZIP') and unzipping (e.g. in a directory called bsaver). Then in chrome navigate to chrome://extensions/ and click 'load unpacked extension' and go the bsaver/extension/ directory to select the extension (it's the directory containing the 'manifest.json' file).
-2. Create a subdir called tiddlywikilocations in the Dowload dir. 
-3. Download a tiddlywiki from http://tiddlywiki.com/, and place in that subdir.
+1. Install by downloading (goto the release https://github.com/buggyj/savetiddlers/releases and download by click the 'source code' zip link) and unzipping (e.g. in a directory called savetiddlers). Then in chrome navigate to chrome://extensions/ and click 'load unpacked extension' and go the bsaver/extension/ directory to select the extension (it's the directory containing the 'manifest.json' file).
+2. **Create a subdir called tiddlywikilocations** in the Dowload dir. 
+3. Download a tiddlywiki from http://tiddlywiki.com/, and **place in that subdir**.
 
 The name of the subdir for backups (relative position to the current TW) can be set from the option page.
 
-## Getting started (firefox 57beta)
-Same as chrome, except navigate to about:debugging and click 'Load Temporary Add-on'. Until a version of the add-on is signed this step will need to be repeat each time firefox starts.
+## Getting started (firefox from v56)
+0. Uninstall tiddlyfox thru the addons page (if it is installed).
+1. Click this link to start installing.
+https://github.com/buggyj/savetiddlers/releases/download/0.1/save_tiddlers-0.1-an.fx.xpi
+**Create a subdir called tiddlywikilocations** in the Dowload dir. 
+3. Download a tiddlywiki from http://tiddlywiki.com/, and **place in that subdir**.
 
 
 ## Gotchas
@@ -25,4 +29,4 @@ onDeterminingFilename has not been implemented in firefox.
 
 The Download directory must not be beneath a directory called tiddlywikilocations.
 
-These are tested for within the extension and control is passed to the file chooser.
+These are tested for within the extension and if found, control is passed to the file chooser.
