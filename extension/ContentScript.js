@@ -1,3 +1,7 @@
+/*
+ * parts of this file is from https://github.com/Jermolene/TiddlyWiki5
+ * which is licensed under the BSD format copyright Jermolene Ruston
+ */
 document.addEventListener('DOMContentLoaded', injectMessageBox, false);
 
 /*
