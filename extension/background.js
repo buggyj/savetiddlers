@@ -4,7 +4,7 @@ var minutebacks = false; //set to true to allow backs every minute for testing
 var tiddlywikilocations = "tiddlywikilocations";
 var  $ = {"/":"/"};
 
-var settup = "This is a test file for savetiddlers";
+var testfilecontent = "This is a test file for savetiddlers extension";
 
 function datesArray(now,andHours,andMinutes)
 {
@@ -103,7 +103,7 @@ if (msg.type === "start") {
 	} else{ 
 		// first download check our destination is valid by download a dummy file first and then reading back the filepath	
 		chrome.downloads.download({
-			url: URL.createObjectURL(new Blob(["test for savetiddlers"], {type: 'text/plain'})),
+			url: URL.createObjectURL(new Blob([testfilecontent], {type: 'text/plain'})),
 			filename: testpath,
 			conflictAction: 'overwrite'
 			},function(id){chrome.downloads.onChanged.addListener(function hearchange(deltas){
