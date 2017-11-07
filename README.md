@@ -6,7 +6,8 @@
 
 ## Scope and limitations
 1. This is a browser extension designed to work with chrome and other chromium based browsers, and the new firefox browser (v57 and latter).
-2. Due to browser restrictions tiddlywikis must be located below a subdir of the 'Download' directory.
+2. Due to browser restrictions tiddlywikis must be located below a subdir of the 'Download' directory. This directory is called 'tiddlywikilocations'.
+3. A test file needs to be downloaded (and then delete) to find the location of the download directory as there is no api for reading the download directory location, and this is seen by the user.
 
 ## Getting started (chrome)
 1. Install by downloading (goto the release https://github.com/buggyj/savetiddlers/releases and download by click the 'source code' zip link) and unzipping (e.g. in a directory called savetiddlers). Then in chrome navigate to chrome://extensions/ and click 'load unpacked extension' and go the bsaver/extension/ directory to select the extension (it's the directory containing the 'manifest.json' file).
@@ -30,3 +31,5 @@ onDeterminingFilename has not been implemented in firefox.
 The Download directory must not be beneath a directory called tiddlywikilocations.
 
 These are tested for within the extension and if found, control is passed to the file chooser.
+
+# 
