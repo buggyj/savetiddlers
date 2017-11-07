@@ -2,8 +2,9 @@ var testmode = false; //set to true to avoid path test
 var minutebacks = false; //set to true to allow backs every minute for testing
 
 var tiddlywikilocations = "tiddlywikilocations";
-
 var  $ = {"/":"/"};
+
+var settup = "This is a test file for savetiddlers";
 
 function datesArray(now,andHours,andMinutes)
 {
@@ -29,10 +30,11 @@ function equalDateArrays(Ar1,Ar2) {
 	
 chrome.runtime.getPlatformInfo( function(info) {if(info.os == "win") { $["/"] = "\\"; }
 	
-var testpath = 'tiddlywikilocations'+$["/"]+'dummydl059723833.html';
+var testpath = 'tiddlywikilocations'+$["/"]+'readTiddlySaverInstruction59723833.html';
 
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
     console.log("savetiddlers: background got message.twdl");
+    
     function dodownload (msg){					
 	chrome.downloads.download({
 		url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
@@ -74,29 +76,29 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 		});
 	});
 }
+    console.log("savetiddlers: background 2nd step");
+////////////////////////// start ///////////////////////////////
+if (msg.type === "start") {
 	var path, firstloc = msg.filePath.indexOf($["/"]+tiddlywikilocations+$["/"]);
 	
 	msg.fPath = msg.filePath.substring(0, firstloc);
 	if (firstloc === -1) {
-		alert("file not in a sudir to "+tiddlywikilocations+", it will be saved to the download dir");
+		console.log("file not in a sudir to "+tiddlywikilocations+", it will be saved to the download dir");
 		path = msg.filePath.split($["/"]);
 		msg.path = path[path.length-1];
+		msg.twdl = false;
 	}
 	else {
 		msg.path = msg.filePath.slice(firstloc+tiddlywikilocations.length + "//".length);
 		msg.twdl = true;
 	}
-
+    console.log("savetiddlers: background 3nd step");
     // show the choose file dialogue when tw not under 'tiddlywikilocations'
 	if (!msg.twdl) {
 		console.log("savetiddlers: not in tiddlywikilocations "+msg.path);
-		chrome.downloads.download({
-			url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
-			filename: msg.path,
-			saveAs : true
-		},function(id){sendResponse("failedloc");});
-		
+		sendResponse("failedloc");
 	} else if (testmode) {
+		console.log("savetiddlers: avoid path testing");
 		dodownload(msg);//avoid path testing
 	} else{ 
 		// first download check our destination is valid by download a dummy file first and then reading back the filepath	
@@ -115,11 +117,7 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 							dodownload(msg);
 						} else {				
 							console.log("savetiddlers: failed path "+msg.fPath +"!="+x[0].filename.split($["/"]+testpath)[0]);
-							chrome.downloads.download({
-								url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
-								filename: msg.path,
-								saveAs : true
-							},function(id){sendResponse("failedpath");});
+							sendResponse("failedpath");
 						}
 						
 						chrome.downloads.removeFile(id);
@@ -131,5 +129,14 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 		)
 	}
 	return true;
+} else {
+		var path = msg.filePath.split($["/"]);
+		path = path[path.length-1];
+		chrome.downloads.download({
+			url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
+			filename: path,
+			saveAs : true
+		},function(id){sendResponse("saved");});
+}
 })
 });

@@ -51,12 +51,20 @@ function injectMessageBox(doc) {
 			// Send a confirmation message
 			var event1;
 			console.log ("savetiddlers: response is "+response);
-			if (response === "failedloc" ) console.log("savetiddlers: TW in wrong location");
-			if (response === "failedpath") console.log("savetiddlers: TW in wrong location or another extension is changing download");
-			event1 =doc.createEvent("Events");
-			event1.initEvent("tiddlyfox-have-saved-file",true,false);
-			event1.savedFilePath = path;
-			message.dispatchEvent(event1);
+			if (response === "failedloc" || response === "failedpath" ) {
+				alert(" TW not in tiddlywikilocations within the download directory.\n using default download directory"); 
+				finishSave(path,content, function(response){
+					event1 =doc.createEvent("Events");
+					event1.initEvent("tiddlyfox-have-saved-file",true,false);
+					event1.savedFilePath = path;
+					message.dispatchEvent(event1);
+				})
+			} else {
+				event1 =doc.createEvent("Events");
+				event1.initEvent("tiddlyfox-have-saved-file",true,false);
+				event1.savedFilePath = path;
+				message.dispatchEvent(event1);
+			}
 		});
 
 
@@ -71,7 +79,24 @@ function injectMessageBox(doc) {
 			var msg = {};
 			msg.filePath = filePath;
 			msg.txt = content;
+			msg.type = "start"
 			console.log("from cs: we are inside downloads at "+msg.filePath);
+            chrome.runtime.sendMessage(msg,callback);
+			return true;
+		} catch(ex) {
+			alert(ex);
+			return false;
+		}
+	}
+function finishSave(filePath,content,callback) {
+
+		// Save the file
+		try {
+			var msg = {};
+			msg.filePath = filePath;
+			msg.txt = content;
+			msg.type = "finish"
+			console.log("from cs2: we are inside downloads at "+msg.filePath);
             chrome.runtime.sendMessage(msg,callback);
 			return true;
 		} catch(ex) {
