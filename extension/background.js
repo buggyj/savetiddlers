@@ -120,7 +120,7 @@ if (msg.type === "start") {
 							sendResponse("failedpath");
 						}
 						
-						chrome.downloads.removeFile(id);
+						chrome.downloads.removeFile(id,function(){chrome.downloads.erase({id:id})});
 					});
 							
 				}
