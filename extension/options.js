@@ -16,7 +16,14 @@ function save_options() {
 
 // Restores select box and text fields
 function restore_options() {
-  
+		try {
+		browser.runtime.getBrowserInfo(function(info){
+			if (info.vendor != "Mozilla")document.getElementById('showand').hidden = false;
+		});
+	} catch(e) {document.getElementById('showand').hidden = false;}
+
+	
+
   chrome.storage.local.get({
 	backupdir:  "backupdir",
 	backup: false
@@ -25,6 +32,7 @@ function restore_options() {
     document.getElementById("backup").checked = items.backup;
   });
 }
+
 document.addEventListener('DOMContentLoaded', restore_options);
 document.getElementById('save').addEventListener('click',
     save_options);
