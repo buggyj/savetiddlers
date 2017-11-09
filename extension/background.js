@@ -29,8 +29,13 @@ function equalDateArrays(Ar1,Ar2) {
 }
 	
 chrome.runtime.getPlatformInfo( function(info) {if(info.os == "win") { $["/"] = "\\"; }
-	
-var testpath = 'tiddlywikilocations'+$["/"]+'readTiddlySaverInstruction59723833.html';
+
+var testbase =	'tiddlywikilocations'+$["/"]+'readTiddlySaverInstruction';
+var round = '59723833'; //by rotating this string of digits we can have 8 unique named test files for simutaneous use
+						//ie testpath = testbase+round+'.html';rotate(round) for next test file
+var rlen = round.length - 1;
+
+
 
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
     console.log("savetiddlers: background got message.twdl");
@@ -102,21 +107,21 @@ if (msg.type === "start") {
 		dodownload(msg);//avoid path testing
 	} else{ 
 		// first download check our destination is valid by download a dummy file first and then reading back the filepath	
+		round = round[rlen] + round.substring(0, rlen);
 		chrome.downloads.download({
 			url: URL.createObjectURL(new Blob([testfilecontent], {type: 'text/plain'})),
-			filename: testpath,
+			filename: testbase+round+'.html',
 			conflictAction: 'overwrite'
 			},function(id){chrome.downloads.onChanged.addListener(function hearchange(deltas){
 				// wait for completion
 				if (deltas.id == id && deltas.state && deltas.state.current === "complete") {
 					chrome.downloads.onChanged.removeListener(hearchange);
 					chrome.downloads.search({id:id}, function(x){
-						//check that our path is the same as request
-						if (msg.fPath == x[0].filename.split($["/"]+testpath)[0]) {
+						if (msg.fPath == x[0].filename.split($["/"]+testbase)[0]) {
 							// All tests passed!
 							dodownload(msg);
 						} else {				
-							console.log("savetiddlers: failed path "+msg.fPath +"!="+x[0].filename.split($["/"]+testpath)[0]);
+							console.log("savetiddlers: failed path "+msg.fPath +"!="+x[0].filename.split($["/"]+testbase)[0]);
 							sendResponse("failedpath");
 						}
 						
