@@ -41,28 +41,31 @@ function injectMessageBox(doc) {
 		// Attach the event handler to the message box
 		messageBox.addEventListener("tiddlyfox-save-file",function(event) {
 		// Get the details from the message
-		var message = event.target,
-			path = message.getAttribute("data-tiddlyfox-path"),
-			content = message.getAttribute("data-tiddlyfox-content");
+		var message = event.target,msg = {};
+		msg.path = message.getAttribute("data-tiddlyfox-path");
+		msg.content = message.getAttribute("data-tiddlyfox-content");
+		msg.base = message.getAttribute("data-tiddlyfox-base");
+		msg.backupdir = message.getAttribute("data-tiddlyfox-backupdir");
+		msg.backuppath = message.getAttribute("data-tiddlyfox-backuppath");
 		// Remove the message element from the message box
 		message.parentNode.removeChild(message);
 		// Save the file
-		saveFile(path,content,function(response) {
+		saveFile(msg,function(response) {
 			// Send a confirmation message
 			var event1;
 			console.log ("savetiddlers: response is "+response);
 			if (response === "failedloc" || response === "failedpath" ) {
-				alert(" TW not in tiddlywikilocations within the download directory.\n using default download directory"); 
-				finishSave(path,content, function(response){
+				alert(" TW not in "+ (base?base:"tiddlywikilocations") +" within the download directory.\n using default download directory"); 
+				finishSave(msg.path,msg.content, function(response){
 					event1 =doc.createEvent("Events");
 					event1.initEvent("tiddlyfox-have-saved-file",true,false);
-					event1.savedFilePath = path;
+					event1.savedFilePath = msg.path;
 					message.dispatchEvent(event1);
 				})
 			} else {
 				event1 =doc.createEvent("Events");
 				event1.initEvent("tiddlyfox-have-saved-file",true,false);
-				event1.savedFilePath = path;
+				event1.savedFilePath = msg.path;
 				message.dispatchEvent(event1);
 			}
 		});
@@ -72,14 +75,17 @@ function injectMessageBox(doc) {
 	},false);
 	}
 
-	 function saveFile(filePath,content,callback) {
+	 function saveFile(messg,callback) {
 
 		// Save the file
 		try {
 			var msg = {};
-			msg.filePath = filePath;
-			msg.txt = content;
-			msg.type = "start"
+			msg.filePath = messg.path;
+			msg.txt = messg.content;
+			msg.type = "start";
+			msg.locations = messg.base;
+			msg.backupdir = messg.backupdir;
+			msg.backuppath = messg.backuppath;
 			console.log("from cs: we are inside downloads at "+msg.filePath);
             chrome.runtime.sendMessage(msg,callback);
 			return true;
