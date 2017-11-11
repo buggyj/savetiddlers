@@ -18,6 +18,8 @@ function isTiddlyWikiClassic(doc) {
 			(versionArea && /TiddlyWiki/.test(versionArea.text));
 }
 
+var debouncing =[];
+
 function injectMessageBox(doc) {
 	var s;
 	doc = document;
@@ -47,8 +49,12 @@ function injectMessageBox(doc) {
 		// Remove the message element from the message box
 		message.parentNode.removeChild(message);
 		// Save the file
+
+		if (debouncing[path]) return;
+		debouncing[path] = true;
 		saveFile(path,content,function(response) {
 			// Send a confirmation message
+			debouncing[path] = false;
 			var event1;
 			console.log ("savetiddlers: response is "+response);
 			if (response === "failedloc" || response === "failedpath" ) {
