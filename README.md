@@ -14,7 +14,7 @@ The name of the subdir for backups (relative position to the current TW) can be 
 ## Getting started (firefox from v56)
 0. Uninstall tiddlyfox thru the addons page (if it is installed).
 1. Click this link to start installing.
-https://github.com/buggyj/savetiddlers/releases/download/0.3/save_tiddlers-0.3-an.fx.xpi
+https://github.com/buggyj/savetiddlers/releases/download/0.5/save_tiddlers-0.5-an.fx.xpi
 **Create a subdir called tiddlywikilocations in the Dowload dir. Only files within this directory** or its subdirectory will be **autosaved** by this extension.
 3. Download a tiddlywiki from http://tiddlywiki.com/, and **place in that subdir**.
 
