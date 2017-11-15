@@ -1,6 +1,6 @@
 # savetiddlers (still in prerelease stage)
 
-## Warning This extension must be the only tiddlywiki filesaving extension installed. Uninstall any other tiddlywiki filesaver *before* installing this extension
+## Warning! This extension must be the only tiddlywiki filesaving extension installed. Uninstall any other tiddlywiki filesaver *before* installing this extension.
 
 ## Aim
 1. To enable tiddlywikis to be saved like a file, i.e. the new (modified) version overwrites the old version.
