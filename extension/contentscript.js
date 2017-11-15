@@ -34,10 +34,19 @@ function injectMessageBox(doc) {
 	}
 		// Inject the message box
 		var messageBox = doc.getElementById("tiddlyfox-message-box");
-		if(!messageBox) {
+		if(messageBox) {
+			var othersw = messageBox.getAttribute("data-message-box-creator")|| null;
+			if (othersw) {
+				alert ("savetiddlers has detected that another tiddlysaver called "+othersw+" is install. Currently only one saver is supported therefore - savetiddlers will not activate");
+				return;
+			} else {
+				messageBox.setAttribute("data-message-box-creator","savetiddlers");
+			} 
+		} else {
 			messageBox = doc.createElement("div");
 			messageBox.id = "tiddlyfox-message-box";
 			messageBox.style.display = "none";
+			messageBox.setAttribute("data-message-box-creator","savetiddlers");
 			doc.body.appendChild(messageBox);
 		}
 		// Attach the event handler to the message box

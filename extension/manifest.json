@@ -1,10 +1,11 @@
 {
     "name": "Save Tiddlers",
-    "version": "0.3",
+    "version": "0.6",
     "manifest_version": 2,
     "applications": {
         "gecko": {
-            "id": "random201709301147@buggyjef.uk"
+            "id": "random201709301147@buggyjef.uk",
+            "strict_min_version": "56.0"
         }
     }, 
      "browser_action": {
@@ -21,7 +22,7 @@
 	},
     "content_scripts" : [ {
 		"js" : [
-			"ContentScript.js"
+			"contentscript.js"
 		],
       "matches" : [
         "file:///*"
