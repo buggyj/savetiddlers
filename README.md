@@ -1,5 +1,8 @@
 # savetiddlers (still in prerelease stage)
 
+# Warning
+This extension must be the only tiddlywiki filesaving extension installed. 
+
 ## Aim
 1. To enable tiddlywikis to be saved like a file, i.e. the new (modified) version overwrites the old version.
 2. To provide automatic backups.
@@ -29,7 +32,7 @@ https://github.com/buggyj/savetiddlers/releases/download/0.5/save_tiddlers-0.5-a
 
 ## Gotchas
 In chome there is the event 'onDeterminingFilename' which extensions can watch for and override the target DownloadItem.filename (some extensions move downloads into different folders by file type) which would break things. 
-onDeterminingFilename has not been implemented in firefox.
+onwDeterminingFilename has not been implemented in firefox.
 
 The Download directory must not be beneath a directory called tiddlywikilocations.
 
