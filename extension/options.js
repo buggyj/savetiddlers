@@ -3,7 +3,8 @@ function save_options() {
   var backupdir = document.getElementById('backupdir').value;
   chrome.storage.local.set({
     backupdir:  backupdir,
-    backup: document.getElementById("backup").checked
+    backup: document.getElementById("backup").checked,
+    nag: document.getElementById("nag").checked
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -26,10 +27,12 @@ function restore_options() {
 
   chrome.storage.local.get({
 	backupdir:  "backupdir",
-	backup: false
+	backup: false,
+	nag: true
   }, function(items) {
     document.getElementById('backupdir').value = items.backupdir;
     document.getElementById("backup").checked = items.backup;
+    document.getElementById("nag").checked = items.nag;
   });
 }
 

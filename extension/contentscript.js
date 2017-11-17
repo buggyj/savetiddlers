@@ -67,12 +67,14 @@ function injectMessageBox(doc) {
 			var event1;
 			console.log ("savetiddlers: response is "+response);
 			if (response === "failedloc" || response === "failedpath" ) {
-				alert(" TW not in tiddlywikilocations within the download directory.\n using default download directory"); 
-				finishSave(path,content, function(response){
-					event1 =doc.createEvent("Events");
-					event1.initEvent("tiddlyfox-have-saved-file",true,false);
-					event1.savedFilePath = path;
-					message.dispatchEvent(event1);
+				chrome.storage.local.get({nag:true}, function(items) {
+					if (items.nag) alert(" TW not in tiddlywikilocations within the download directory.\n using default download directory"); 
+					finishSave(path,content, function(response){
+						event1 =doc.createEvent("Events");
+						event1.initEvent("tiddlyfox-have-saved-file",true,false);
+						event1.savedFilePath = path;
+						message.dispatchEvent(event1);
+					})
 				})
 			} else {
 				event1 =doc.createEvent("Events");
