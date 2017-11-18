@@ -1,8 +1,10 @@
 // Saves options to chrome.storage.sync.
 function save_options() {
-  var backupdir = document.getElementById('backupdir').value;
+  if (!check(document.getElementById('homedir'))) return;
+  if (!check(document.getElementById('backupdir'))) return;
   chrome.storage.local.set({
-    backupdir:  backupdir,
+    homedir:  document.getElementById('homedir').value,
+    backupdir:  document.getElementById('backupdir').value,
     backup: document.getElementById("backup").checked,
     nag: document.getElementById("nag").checked
   }, function() {
@@ -14,7 +16,20 @@ function save_options() {
     }, 750);
   });
 }
-
+function check(element){
+    var alphabet = /[\/\\]/; //disallow directory separators
+    if (!element.value.match(alphabet)) {
+        return true;
+    } else {
+		var error = document.getElementById('error');
+			error.textContent = 'name invalid.';
+		element.focus();
+		setTimeout(function() {
+		  error.textContent = '';
+		}, 2750);
+        return false;
+    }
+}
 // Restores select box and text fields
 function restore_options() {
 		try {
@@ -26,10 +41,12 @@ function restore_options() {
 	
 
   chrome.storage.local.get({
+	homedir:  "tiddlywikilocations",
 	backupdir:  "backupdir",
 	backup: false,
 	nag: true
   }, function(items) {
+    document.getElementById('homedir').value = items.homedir;
     document.getElementById('backupdir').value = items.backupdir;
     document.getElementById("backup").checked = items.backup;
     document.getElementById("nag").checked = items.nag;
