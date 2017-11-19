@@ -16,9 +16,30 @@ function save_options() {
     }, 750);
   });
 }
+
+
+//from https://github.com/parshap/node-sanitize-filename/
+var illegalRe = /[\/\?<>\\:\*\|":]/;
+var ctlRe = /[\x00-\x1f\x80-\x9f]/;
+var rvRe = /^\.+$/;
+var winRsRe = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i;
+var winTrRe = /[\. ]+$/;
+
+var unixRe = /[\/]/;
+var unixdotsRe =/^\.|\.\.$/;
+
+var test;
+
+chrome.runtime.getPlatformInfo( function(info) {if(info.os === "win") {
+	test = function (value){return (value.match(illegalRe) || value.match(ctlRe) 
+					|| value.match(rvRe) || value.match(winRsRe) || value.match(winTrRe));}
+	} else {
+		test = function (value){return (value.match(unixRe) || value.match(unixdotsRe));}
+	}
+});
 function check(element){
-    var alphabet = /[\/\\]/; //disallow directory separators
-    if (!element.value.match(alphabet)) {
+
+    if (!test(element.value)) {
         return true;
     } else {
 		var error = document.getElementById('error');
