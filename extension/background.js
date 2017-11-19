@@ -28,8 +28,8 @@ function equalDateArrays(Ar1,Ar2) {
 	return true;
 }
 
-
-chrome.runtime.getPlatformInfo( function(info) {if(info.os == "win") { $["/"] = "\\"; }
+var os = "notwin";
+chrome.runtime.getPlatformInfo( function(info) {if(info.os == "win") { $["/"] = "\\"; os = "win";}
 
 var testbase ;//	tiddlywikilocations+$["/"]+'readTiddlySaverInstruction';
 var round = '59723833'; //by rotating this string of digits we can have 8 unique named test files for simutaneous use
@@ -122,7 +122,12 @@ if (msg.type === "start") {
 				if (deltas.id == id && deltas.state && deltas.state.current === "complete") {
 					chrome.downloads.onChanged.removeListener(hearchange);
 					chrome.downloads.search({id:id}, function(x){
-						if (msg.fPath == x[0].filename.split($["/"]+testbase)[0]) {
+						var bodyy = msg.fPath, bodyx = x[0].filename.split($["/"]+testbase)[0];
+						if (os === "win") {//make drive letters the same case
+							bodyy = bodyy.replace(/^./g, bodyy[0].toLowerCase());
+							bodyx = bodyx.replace(/^./g, bodyx[0].toLowerCase());
+						}  
+						if (bodyy === bodyx) {
 							// All tests passed!
 							dodownload(msg,tiddlywikilocations);
 						} else {				
