@@ -145,7 +145,7 @@ if (msg.type === "start") {
 		path = path[path.length-1];
 		chrome.downloads.download({
 			url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
-			filename: path,
+			filename: tiddlywikilocations+$["/"]+path,
 			saveAs : true
 		},function(id){sendResponse("saved");});
 }
