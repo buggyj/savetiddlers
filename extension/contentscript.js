@@ -53,8 +53,10 @@ function injectMessageBox(doc) {
 		messageBox.addEventListener("tiddlyfox-save-file",function(event) {
 		// Get the details from the message
 		var message = event.target,
-			path = message.getAttribute("data-tiddlyfox-path"),
-			content = message.getAttribute("data-tiddlyfox-content");
+			path, 
+			content = message.getAttribute("data-tiddlyfox-content");		
+			try{path = decodeURI(escape(message.getAttribute("data-tiddlyfox-path")))} //unescape was used insted of decodeURI
+			catch(e){path = message.getAttribute("data-tiddlyfox-path")}; // in case this get fixed
 		// Remove the message element from the message box
 		message.parentNode.removeChild(message);
 		// Save the file
