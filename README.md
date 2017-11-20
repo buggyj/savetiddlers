@@ -11,7 +11,7 @@ There are options to create once a day backs, with the date appended to the tidd
 
 ## Getting started (chrome)
 1. Install by downloading (goto the release https://github.com/buggyj/savetiddlers/releases and download by click the 'source code' zip link) and unzipping (e.g. in a directory called savetiddlers). Then in chrome navigate to chrome://extensions/ and click 'load unpacked extension' and go the bsaver/extension/ directory to select the extension (it's the directory containing the 'manifest.json' file).
-2. **Create a subdir called tiddlywikilocations** in the Dowload dir. 
+2. **Create a subdir called tiddlywikilocations** in the Download dir. 
 3. Download a tiddlywiki from http://tiddlywiki.com/, and **place in that subdir**, or copy your tiddlywikis there.
 
 Note that chome with ask you to disable the 'developer mode' extensions each time you start the browser (but not with linux), as the extension was not loaded from the Chrome Web Store.
