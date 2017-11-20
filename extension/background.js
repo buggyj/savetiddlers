@@ -50,11 +50,11 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 	},
 	function(id) {
 		console.log("savetiddlers: saved "+msg.path);
-		chrome.storage.local.get({backup:false,periodchoice:"day",period:[],backupdir:"backupdir",backedup:{}}, function(items) {
+		chrome.storage.local.get({backuptw5:true,backuptwc:false,periodchoice:"day",period:[],backupdir:"backupdir",backedup:{}}, function(items) {
 			var newvals={}, newdate = new Date(), 
 				date = datesArray(newdate,items.periodchoice == "hour",minutebacks), 
 				bkdate = newdate.toISOString().slice(0,10);
-			if (items.backup === false) {
+			if ((msg.tw5 && items.backuptw5 === false) || (!msg.tw5 && items.backuptwc === false)) {
 				sendResponse ({status:"saved"});
 				return;
 			}

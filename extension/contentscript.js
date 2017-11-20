@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', injectMessageBox, false);
 var patherrormsg = "Automatic saving not possible.\nAs your TW is not within the contolled directory a manual save is required";
 var othersaver1 = "savetiddlers has detected that another tiddlysaver called ";
 var othersaver2 = " is install. Currently only one saver is supported therefore - savetiddlers will not activate";
+
+var backup = true;
+var tw5 = true;
 /*
  * we may want to download a dummy file and use the download api to see 
  * if it lands in the correct dir,
@@ -33,7 +36,7 @@ function injectMessageBox(doc) {
 		s.onload = function() {
 			s.parentNode.removeChild(s);
 		};
-		
+	tw5 = false;
 	}
 		// Inject the message box
 		var messageBox = doc.getElementById("tiddlyfox-message-box");
@@ -66,7 +69,7 @@ function injectMessageBox(doc) {
 
 		if (debouncing[path]) return;
 		debouncing[path] = true;
-		saveFile(path,content,function(response) {
+		saveFile(path,content,backup,tw5,function(response) {
 			// Send a confirmation message
 			debouncing[path] = false;
 			var event1;
@@ -92,14 +95,16 @@ function injectMessageBox(doc) {
 	},false);
 	}
 
-	 function saveFile(filePath,content,callback) {
+	 function saveFile(filePath,content,backup,tw5,callback) {
 
 		// Save the file
 		try {
 			var msg = {};
 			msg.filePath = filePath;
 			msg.txt = content;
-			msg.type = "start"
+			msg.backup = backup;
+			msg.type = "start";
+			msg.tw5 = tw5;
 			console.log("from cs: we are inside downloads at "+msg.filePath);
             chrome.runtime.sendMessage(msg,callback);
 			return true;
@@ -110,7 +115,7 @@ function injectMessageBox(doc) {
 	}
 function finishSave(filePath,content,callback) {
 
-		// Save the file
+		// Save the file without control
 		try {
 			var msg = {};
 			msg.filePath = filePath;

@@ -5,7 +5,8 @@ function save_options() {
   chrome.storage.local.set({
     homedir:  document.getElementById('homedir').value,
     backupdir:  document.getElementById('backupdir').value,
-    backup: document.getElementById("backup").checked,
+    backuptw5: document.getElementById("backuptw5").checked,
+    backuptwc: document.getElementById("backuptwc").checked,
     nag: document.getElementById("nag").checked
   }, function() {
     // Update status to let user know options were saved.
@@ -64,12 +65,14 @@ function restore_options() {
   chrome.storage.local.get({
 	homedir:  "tiddlywikilocations",
 	backupdir:  "backupdir",
-	backup: false,
+	backuptw5: true,
+	backuptwc: false,
 	nag: true
   }, function(items) {
     document.getElementById('homedir').value = items.homedir;
     document.getElementById('backupdir').value = items.backupdir;
-    document.getElementById("backup").checked = items.backup;
+    document.getElementById("backuptw5").checked = items.backuptw5;
+    document.getElementById("backuptwc").checked = items.backuptwc;
     document.getElementById("nag").checked = items.nag;
   });
 }
