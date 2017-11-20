@@ -14,7 +14,7 @@ There are options to create once a day backs, with the date appended to the tidd
 2. **Create a subdir called tiddlywikilocations** in the Dowload dir. 
 3. Download a tiddlywiki from http://tiddlywiki.com/, and **place in that subdir**, or copy your tiddlywikis there.
 
-Note that chome with ask you to disable the 'developer mode' extension each time you start the browser (but not with linux), as the extension was not loaded from the 
+Note that chome with ask you to disable the 'developer mode' extensions each time you start the browser (but not with linux), as the extension was not loaded from the Chrome Web Store.
 
 ## Aim
 1. to replace (as far as possible) the now defunct tiddlyfox extension, and provide backups
