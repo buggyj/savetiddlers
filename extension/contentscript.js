@@ -4,6 +4,9 @@
  */
 document.addEventListener('DOMContentLoaded', injectMessageBox, false);
 
+var patherrormsg = "Automatic saving not possible.\nAs your TW is not within the contolled directory a manual save is required";
+var othersaver1 = "savetiddlers has detected that another tiddlysaver called ";
+var othersaver2 = " is install. Currently only one saver is supported therefore - savetiddlers will not activate";
 /*
  * we may want to download a dummy file and use the download api to see 
  * if it lands in the correct dir,
@@ -37,7 +40,7 @@ function injectMessageBox(doc) {
 		if(messageBox) {
 			var othersw = messageBox.getAttribute("data-message-box-creator")|| null;
 			if (othersw) {
-				alert ("savetiddlers has detected that another tiddlysaver called "+othersw+" is install. Currently only one saver is supported therefore - savetiddlers will not activate");
+				alert (othersaver1+othersw+othersaver2);
 				return;
 			} else {
 				messageBox.setAttribute("data-message-box-creator","savetiddlers");
@@ -67,10 +70,10 @@ function injectMessageBox(doc) {
 			// Send a confirmation message
 			debouncing[path] = false;
 			var event1;
-			console.log ("savetiddlers: response is "+response);
-			if (response === "failedloc" || response === "failedpath" ) {
+			console.log ("savetiddlers: response is "+response.status);
+			if (response.status === "failedloc" || response.status === "failedpath" ) {
 				chrome.storage.local.get({nag:true}, function(items) {
-					if (items.nag) alert(" TW not in tiddlywikilocations within the download directory.\n using default download directory"); 
+					if (items.nag) alert(patherrormsg); 
 					finishSave(path,content, function(response){
 						event1 =doc.createEvent("Events");
 						event1.initEvent("tiddlyfox-have-saved-file",true,false);
@@ -85,8 +88,6 @@ function injectMessageBox(doc) {
 				message.dispatchEvent(event1);
 			}
 		});
-
-
 		return false;
 	},false);
 	}

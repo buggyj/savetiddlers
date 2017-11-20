@@ -55,12 +55,12 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 				date = datesArray(newdate,items.periodchoice == "hour",minutebacks), 
 				bkdate = newdate.toISOString().slice(0,10);
 			if (items.backup === false) {
-				sendResponse ("saved");
+				sendResponse ({status:"saved"});
 				return;
 			}
 			if (equalDateArrays(date, items.period)) {
 				if (items.backedup[msg.path]) { 
-					sendResponse ("saved");
+					sendResponse ({status:"saved"});
 					return;// already save in this period
 				}
 				// continue with this peroid
@@ -77,7 +77,7 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 					url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
 					filename: tiddlywikilocations+$["/"]+items.backupdir+$["/"]+msg.path.replace(new RegExp('.{' + msg.path.lastIndexOf(".")  + '}'), '$&' + bkdate),
 					conflictAction: 'overwrite'
-				},function(id){sendResponse("backupsaved");});
+				},function(id){sendResponse({status:"backupsaved"});});
 			console.log("savetiddlers: backedup "+msg.path);
 			chrome.storage.local.set(newvals);
 		});
@@ -93,7 +93,7 @@ if (msg.type === "start") {
 	
 	msg.fPath = msg.filePath.substring(0, firstloc);
 	if (firstloc === -1) {
-		console.log("file not in a sudir to "+tiddlywikilocations+", it will be saved to the download dir");
+		console.log("file not in a sudir to "+tiddlywikilocations+", it must be saved to the download dir");
 		path = msg.filePath.split($["/"]);
 		msg.path = path[path.length-1];
 		msg.twdl = false;
@@ -106,7 +106,7 @@ if (msg.type === "start") {
     // show the choose file dialogue when tw not under 'tiddlywikilocations'
 	if (!msg.twdl) {
 		console.log("savetiddlers: not in "+tiddlywikilocations+" "+msg.path);
-		sendResponse("failedloc");
+		sendResponse({status:"failedloc",location:tiddlywikilocations});
 	} else if (testmode) {
 		console.log("savetiddlers: avoid path testing");
 		dodownload(msg,tiddlywikilocations);//avoid path testing
@@ -132,7 +132,7 @@ if (msg.type === "start") {
 							dodownload(msg,tiddlywikilocations);
 						} else {				
 							console.log("savetiddlers: failed path "+msg.fPath +"!="+x[0].filename.split($["/"]+testbase)[0]);
-							sendResponse("failedpath");
+							sendResponse({status:"failedpath",path:x[0].filename.split($["/"]+testbase)[0]});
 						}
 						
 						chrome.downloads.removeFile(id,function(){chrome.downloads.erase({id:id})});
@@ -152,7 +152,7 @@ if (msg.type === "start") {
 			url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
 			filename: tiddlywikilocations+$["/"]+path,
 			saveAs : true
-		},function(id){sendResponse("saved");});
+		},function(id){sendResponse({status:"saved"});});
 }
 })
 
