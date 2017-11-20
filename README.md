@@ -3,7 +3,7 @@
 ## Getting started (firefox from v57)
 1. Click this link to start installing.
 https://github.com/buggyj/savetiddlers/releases/download/0.6/save_tiddlers-0.6-an.fx.xpi
-2. **Create a subdir called tiddlywikilocations** in the folder used for downloads (you can see and change this location in firefoxes prefrences). 
+2. **Create a subdir called tiddlywikilocations** in the folder firefox uses for downloads (you can see and change this location in firefoxes prefrences). 
 3. Download a tiddlywiki from http://tiddlywiki.com/, and **place in that subdir**, or copy your tiddlywikis there.
 
 ## Options
@@ -17,7 +17,7 @@ There are options to create once a day backs, with the date appended to the tidd
 Note that chome with ask you to disable the 'developer mode' extensions each time you start the browser (but not with linux), as the extension was not loaded from the Chrome Web Store.
 
 ## Aim
-1. to replace (as far as possible) the now defunct tiddlyfox extension, and provide backups
+1. to replace (as far as possible) the now defunct tiddlyfox extension, and provide backups.
 
 ## Scope and limitations
 1. This is a browser extension designed to work with chrome and other chromium based browsers, and the new firefox browser (v57 and latter).
@@ -28,8 +28,4 @@ Note that chome with ask you to disable the 'developer mode' extensions each tim
 In chome there is the event 'onDeterminingFilename' which extensions can watch for and override the target DownloadItem.filename (some extensions move downloads into different folders by file type) which would break things. 
 onDeterminingFilename has not been implemented in firefox.
 
-The Download directory must not be beneath a directory called tiddlywikilocations.
 
-These are tested for within the extension and if found, control is passed to the file chooser.
-
-# 
