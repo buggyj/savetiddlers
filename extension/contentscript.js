@@ -78,13 +78,26 @@ function injectMessageBox(doc) {
 				chrome.storage.local.get({nag:true}, function(items) {
 					if (items.nag) alert(patherrormsg); 
 					finishSave(path,content, function(response){
-						event1 =doc.createEvent("Events");
-						event1.initEvent("tiddlyfox-have-saved-file",true,false);
-						event1.savedFilePath = path;
-						message.dispatchEvent(event1);
+						// from saveAs
+						console.log ("savetiddlers: finishSave "+response.status);
+						if (response.status === "saved") {
+							if (response.newlocal) {
+								alert("you tiddlywiki has been saved to a new location \n" +response.newlocal);
+							}
+							event1 =doc.createEvent("Events");
+							event1.initEvent("tiddlyfox-have-saved-file",true,false);
+							event1.savedFilePath = path;
+							message.dispatchEvent(event1);
+						} 
+						else {
+							console.log ("savetiddlers: SAVEFAILURE");
+							//send failed
+						}
+
 					})
 				})
 			} else {
+				console.log ("savetiddlers: savefile");
 				event1 =doc.createEvent("Events");
 				event1.initEvent("tiddlyfox-have-saved-file",true,false);
 				event1.savedFilePath = path;
