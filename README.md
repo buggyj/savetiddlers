@@ -2,7 +2,7 @@
 
 ## Getting started (firefox from v57)
 1. Click this link to start installing.
-https://github.com/buggyj/savetiddlers/releases/download/0.6/save_tiddlers-0.6-an.fx.xpi
+https://github.com/buggyj/savetiddlers/releases/download/0.8/save_tiddlers-0.8-an.fx.xpi
 2. **Create a subdir called tiddlywikilocations** in the folder firefox uses for downloads (you can see and change this location in firefoxes prefrences). 
 3. Download a tiddlywiki from http://tiddlywiki.com/, and **place in that subdir**, or copy your tiddlywikis there.
 
