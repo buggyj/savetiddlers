@@ -13,7 +13,11 @@ There are options to create once a day backs, with the date appended to the tidd
 1. Install by downloading (goto the release https://github.com/buggyj/savetiddlers/releases and download by click the 'source code' zip link) and unzipping (e.g. in a directory called savetiddlers). Then in chrome navigate to chrome://extensions/ and click 'load unpacked extension' and go the bsaver/extension/ directory to select the extension (it's the directory containing the 'manifest.json' file).
 2. **Create a subdir called tiddlywikilocations** in the Download dir. 
 3. Download a tiddlywiki from http://tiddlywiki.com/, and **place in that subdir**, or copy your tiddlywikis there.
+4.  The user prefs need to look like this ( If you type 'about:preferences' in the browsers address bar it will take you to the prefs page):
 
+![image](https://user-images.githubusercontent.com/2855795/35642235-cfaf2e86-06c2-11e8-8e56-35f08d4d20b0.png)
+
+I will add to the instructions.
 Note that chome with ask you to disable the 'developer mode' extensions each time you start the browser (but not with linux), as the extension was not loaded from the Chrome Web Store.
 
 ## Aim
@@ -28,4 +32,5 @@ Note that chome with ask you to disable the 'developer mode' extensions each tim
 In chome there is the event 'onDeterminingFilename' which extensions can watch for and override the target DownloadItem.filename (some extensions move downloads into different folders by file type) which would break things. 
 onDeterminingFilename has not been implemented in firefox.
 
-
+## Help
+If you are prompt to save with a filename of readTiddlySaverInstruction83359723 or similar then you need to look as 4. in the 'getting started above'.
