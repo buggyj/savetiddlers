@@ -33,4 +33,4 @@ In chome there is the event 'onDeterminingFilename' which extensions can watch f
 onDeterminingFilename has not been implemented in firefox.
 
 ## Help
-If you are prompt to save with a filename of readTiddlySaverInstruction83359723 or similar then you need to look as 4. in the 'getting started above'.
+If you are prompted to save with a filename of readTiddlySaverInstruction83359723 or similar then you need to look as item 4. in the 'getting started above'.
