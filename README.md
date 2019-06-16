@@ -13,7 +13,7 @@ The location maybe different but the option to 'alway ask where to save files' m
 ## Options
 There are options to create once a day backs, with the date appended to the tiddlywiki's file name. And the option to replace 'tiddlywikilocations' with another directory name of your choice, and to change the name of the back directory.
 
-## Getting started (chrome)
+## Getting started (chrome TW5 only)
 1. Install by downloading (goto the release https://github.com/buggyj/savetiddlers/releases and download by click the 'source code' zip link) and unzipping (e.g. in a directory called savetiddlers). Then in chrome navigate to chrome://extensions/ and click 'load unpacked extension' and go the bsaver/extension/ directory to select the extension (it's the directory containing the 'manifest.json' file).
 2. **Create a subdir called tiddlywikilocations** in the Download dir. 
 3. Download a tiddlywiki from http://tiddlywiki.com/, and **place in that subdir**, or copy your tiddlywikis there.
