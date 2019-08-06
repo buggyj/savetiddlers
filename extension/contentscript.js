@@ -55,7 +55,7 @@ function isTiddlyWikiClassic(doc) {
 var debouncing =[];
 
 function injectMessageBox(doc) {
-	var s;
+	var s, savetiddlers = "savetiddlers";
 	doc = document;
 	if (isTiddlyWikiClassic(doc)) {
 		s = document.createElement('script');
@@ -70,17 +70,17 @@ function injectMessageBox(doc) {
 		var messageBox = doc.getElementById("tiddlyfox-message-box");
 		if(messageBox) {
 			var othersw = messageBox.getAttribute("data-message-box-creator")|| null;
-			if (othersw) {
+			if (othersw && (othersw !== savetiddlers))  {
 				alert (othersaver1+othersw+othersaver2);
 				return;
 			} else {
-				messageBox.setAttribute("data-message-box-creator","savetiddlers");
+				messageBox.setAttribute("data-message-box-creator",savetiddlers);
 			} 
 		} else {
 			messageBox = doc.createElement("div");
 			messageBox.id = "tiddlyfox-message-box";
 			messageBox.style.display = "none";
-			messageBox.setAttribute("data-message-box-creator","savetiddlers");
+			messageBox.setAttribute("data-message-box-creator",savetiddlers);
 			doc.body.appendChild(messageBox);
 		}
 		// Attach the event handler to the message box

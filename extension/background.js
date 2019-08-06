@@ -5,6 +5,8 @@ var tiddlywikilocations = "tiddlywikilocations";
 var  $ = {"/":"/"};
 
 var testfilecontent = "This is a test file for savetiddlers extension";
+var probBlob = new Blob([testfilecontent], {type: 'text/plain'});
+var probBlobUrl = URL.createObjectURL(probBlob);
 
 function datesArray(now,andHours,andMinutes)
 {
@@ -42,16 +44,21 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
     console.log("savetiddlersbg: got request");
     
 
-    function dodownload (msg,tiddlywikilocations){					
+function dodownload (msg,tiddlywikilocations){	
+	var objUrl = URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'}));			
 	chrome.downloads.download({
-		url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
+		url: objUrl,
 		filename: tiddlywikilocations+$["/"]+ msg.path,
 		conflictAction: 'overwrite'
 	},
-	function(id) {
+	function(id) {chrome.downloads.onChanged.addListener(function hearchange(deltas){
+					// wait for completion
+					if (deltas.id == id && deltas.state && deltas.state.current === "complete") {
+						chrome.downloads.onChanged.removeListener(hearchange);
 		console.log("savetiddlers: saved "+msg.path);
+		URL.revokeObjectURL(objUrl);
 		chrome.storage.local.get({backuptw5:true,backuptwc:false,periodchoice:"day",period:[],backupdir:"backupdir",backedup:{}}, function(items) {
-			var newvals={}, newdate = new Date(), 
+			var newvals={}, newdate = new Date(), objUrl2,
 				date = datesArray(newdate,items.periodchoice == "hour",minutebacks), 
 				bkdate = newdate.toISOString().slice(0,10);
 			if ((msg.tw5 && items.backuptw5 === false) || (!msg.tw5 && items.backuptwc === false)) {
@@ -73,15 +80,22 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 			} 
 			// remember we backedup on this filepath
 			newvals.backedup[msg.path] = true;
+			objUrlBkup = URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'}));
 			chrome.downloads.download({
-					url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
+					url: objUrlBkup,
 					filename: tiddlywikilocations+$["/"]+items.backupdir+$["/"]+msg.path.replace(new RegExp('.{' + msg.path.lastIndexOf(".")  + '}'), '$&' + bkdate),
 					conflictAction: 'overwrite'
-				},function(id){sendResponse({status:"backupsaved"});});
+				},function(id){chrome.downloads.onChanged.addListener(function hearchange(deltas){
+					// wait for completion
+					if (deltas.id == id && deltas.state && deltas.state.current === "complete") {
+						chrome.downloads.onChanged.removeListener(hearchange);
+						URL.revokeObjectURL(objUrlBkup);
+						sendResponse({status:"backupsaved"});
+					}})});
 			console.log("savetiddlersbg: backedup "+msg.path);
 			chrome.storage.local.set(newvals);
 		});
-	});
+	}})});
 }
 
 	////////////////////////// start ///////////////////////////////
@@ -115,7 +129,7 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 			// first download check our destination is valid by download a dummy file first and then reading back the filepath	
 			round = round[rlen] + round.substring(0, rlen);
 			chrome.downloads.download({
-				url: URL.createObjectURL(new Blob([testfilecontent], {type: 'text/plain'})),
+				url: probBlobUrl,
 				filename: testbase+round+'.html',
 				conflictAction: 'overwrite'
 				},function(id){chrome.downloads.onChanged.addListener(function hearchange(deltas){
@@ -147,11 +161,12 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 		});
 		return true;
 	} else {
-			console.log("savetiddlersbg: start finish");
+			console.log("savetiddlersbg: start save the file manually");
 			var path = msg.filePath.split($["/"]);
 			path = path[path.length-1];
+			var objUrl = URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'}));
 			chrome.downloads.download({
-				url: URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'})),
+				url: objUrl,
 				filename: tiddlywikilocations+$["/"]+path,
 				saveAs : true
 			},function(id){
@@ -159,15 +174,18 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 					sendResponse({status:"cancelled"});
 					console.log("savetiddlersbg: sent cancelled");
 				} else {
-					chrome.downloads.onChanged.addListener(function hearchange2(deltas){
+					chrome.downloads.onChanged.addListener(function hearchange(deltas){
 						if (deltas.id == id && deltas.state && deltas.state.current === "interrupted") { 
 							sendResponse({status:"cancelled"});
 							console.log("savetiddlersbg: sent cancelled");
-							chrome.downloads.onChanged.removeListener(hearchange2);return true;
+							chrome.downloads.onChanged.removeListener(hearchange);
+							URL.revokeObjectURL(objUrl);
+							return true;
 						}
 						// wait for completion
 						if (deltas.id == id && deltas.state && deltas.state.current === "complete") {
-							chrome.downloads.onChanged.removeListener(hearchange2);
+							chrome.downloads.onChanged.removeListener(hearchange);
+							URL.revokeObjectURL(objUrl);
 							console.log("savetiddlersbg: finishing manual save");
 							chrome.downloads.search({id:id}, function(x){
 								var bodyy = msg.filePath, bodyx = x[0].filename.split($["/"]+testbase)[0];
