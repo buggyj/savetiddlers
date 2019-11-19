@@ -45,7 +45,7 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
     
 
 function dodownload (msg,tiddlywikilocations){	
-	var objUrl = URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'}));			
+	var objUrl = URL.createObjectURL(new Blob([msg.txt], {type: 'text/html'}));			
 	chrome.downloads.download({
 		url: objUrl,
 		filename: tiddlywikilocations+$["/"]+ msg.path,
@@ -80,7 +80,7 @@ function dodownload (msg,tiddlywikilocations){
 			} 
 			// remember we backedup on this filepath
 			newvals.backedup[msg.path] = true;
-			objUrlBkup = URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'}));
+			objUrlBkup = URL.createObjectURL(new Blob([msg.txt], {type: 'text/html'}));
 			chrome.downloads.download({
 					url: objUrlBkup,
 					filename: tiddlywikilocations+$["/"]+items.backupdir+$["/"]+msg.path.replace(new RegExp('.{' + msg.path.lastIndexOf(".")  + '}'), '$&' + bkdate),
@@ -164,7 +164,7 @@ function dodownload (msg,tiddlywikilocations){
 			console.log("savetiddlersbg: start save the file manually");
 			var path = msg.filePath.split($["/"]);
 			path = path[path.length-1];
-			var objUrl = URL.createObjectURL(new Blob([msg.txt], {type: 'text/plain'}));
+			var objUrl = URL.createObjectURL(new Blob([msg.txt], {type: 'text/html'}));
 			chrome.downloads.download({
 				url: objUrl,
 				filename: tiddlywikilocations+$["/"]+path,
