@@ -89,7 +89,7 @@ function injectMessageBox(doc) {
 		var message = event.target,
 			path, 
 			content = message.getAttribute("data-tiddlyfox-content");		
-			path = currentlocation();
+			path = message.getAttribute("data-tiddlyfox-path");
 		// Remove the message element from the message box
 		message.parentNode.removeChild(message);
 		// Save the file
