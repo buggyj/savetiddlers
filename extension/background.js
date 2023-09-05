@@ -1,4 +1,4 @@
-var testmode = false; //set to true to avoid path test
+var testmode = true; //set to true to avoid path test
 var minutebacks = false; //set to true to allow backs every minute for testing
 
 var tiddlywikilocations = "tiddlywikilocations";
@@ -45,7 +45,17 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
     
 
 function dodownload (msg,tiddlywikilocations){	
-	var objUrl = URL.createObjectURL(new Blob([msg.txt], {type: 'text/html'}));			
+	var objUrl = URL.createObjectURL(new Blob([msg.txt], {type: 'text/html'}));		
+	
+	console.log("id:" + chrome.runtime.id)
+
+    chrome.downloads.onDeterminingFilename.addListener(function SuggestFilename(item, suggest) {
+        if (item.byExtensionId && item.byExtensionId === chrome.runtime.id) {
+		    suggest({filename: tiddlywikilocations+$["/"]+ msg.path, conflictAction: 'overwrite'});	
+			chrome.downloads.onDeterminingFilename.removeListener(SuggestFilename);
+        }
+    });
+	
 	chrome.downloads.download({
 		url: objUrl,
 		filename: tiddlywikilocations+$["/"]+ msg.path,
@@ -119,6 +129,7 @@ function dodownload (msg,tiddlywikilocations){
 		}
 		console.log("savetiddlersbg: background 3nd step");
 		// show the choose file dialogue when tw not under 'tiddlywikilocations'
+//		testmode=true
 		if (!msg.twdl) {
 			console.log("savetiddlersbg: not in "+tiddlywikilocations+" "+msg.path);
 			sendResponse({status:"failedloc",location:tiddlywikilocations});
@@ -207,5 +218,3 @@ function dodownload (msg,tiddlywikilocations){
 			});
 	}return true;
 });
-
-
