@@ -59,7 +59,7 @@ function injectMessageBox(doc) {
 	doc = document;
 	if (isTiddlyWikiClassic(doc)) {
 		s = document.createElement('script');
-		s.src = chrome.extension.getURL('script.js');
+		s.src = chrome.runtime.getURL('script.js');
 		(document.head||document.documentElement).appendChild(s);
 		s.onload = function() {
 			s.parentNode.removeChild(s);
